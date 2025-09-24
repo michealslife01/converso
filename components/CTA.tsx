@@ -1,8 +1,26 @@
+import Image from 'next/image'
 import React from 'react'
+import { Button } from './ui/button'
+import Link from 'next/link'
 
 const CTA = () => {
   return (
-    <div>CTA</div>
+    <section className='cta-section'>
+      <div className='cta-badge'> learning your way</div>
+      <h2 className="text-3xl font-bold">
+        Build and Personalize Learning Companions
+      </h2>
+      <p>
+        Pick a name, subject, voice, & personality and start learning through voice conversations that feel natural and fun. 
+      </p>
+      <Image src="/images/cta.svg" alt="CTA" width={362} height={232} />
+      <Button className='flex items-center md:text-xl text-base '> 
+        <Image src="/icons/plus.svg" alt="plus" width={16} height={16} />
+        <Link href="/companions/new">
+        <p>Build a New Companion</p>
+        </Link>
+      </Button>
+    </section>
   )
 }
 
