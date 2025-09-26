@@ -16,7 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { subjects } from "@/constants"
+import { subjects, voices, languages } from "@/constants"
+import { Textarea } from "@/components/ui/textarea"
  
 const formSchema = z.object({
   name: z.string().min(1, {message:'companion is requred.'}),
@@ -25,7 +26,7 @@ const formSchema = z.object({
   voice: z.string().min(1, {message: 'voice is required.'}),
   style: z.string().min(1, {message: 'style is required.'}),
   duration:z.coerce.number().min(1, {message: 'duration is required.'}),
-
+  languages: z.string().min(1, {message: 'language is required.'}),
 
 })
 
@@ -41,6 +42,7 @@ const CompanionForm = () => {
       voice: "",
       style: "",
       duration: 15,
+      languages: "",
     },
   })
  
@@ -59,15 +61,16 @@ const CompanionForm = () => {
             <FormItem>
               <FormLabel>Companion name</FormLabel>
               <FormControl>
-                <Input placeholder="enter the compnion name" {...field} />
+                <Input placeholder="enter the companion name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
          <FormField
           control={form.control}
-          name="name"
+          name="subject"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Subject</FormLabel>
@@ -93,12 +96,38 @@ const CompanionForm = () => {
         />
          <FormField
           control={form.control}
-          name="name"
+          name="topic"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Companion name</FormLabel>
+              <FormLabel>What should this companion teach? </FormLabel>
               <FormControl>
-                <Input placeholder="enter the compnion name" {...field} />
+                <Textarea placeholder="Ex. Derivatives & Integrals" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> 
+         <FormField
+          control={form.control}
+          name="voice"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Voice</FormLabel>
+              <FormControl>
+              <Select onValueChange={field.onChange} value={field.value}
+              defaultValue={field.value}>
+                <SelectTrigger className="input">
+                    <SelectValue placeholder="Select a Voice" />
+                </SelectTrigger>
+                <SelectContent>
+                    { Object.keys(voices).map((voice: string) => (
+                        <SelectItem value={voice} key={voice} 
+                        className="capitalize">
+                            {voice}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,12 +135,21 @@ const CompanionForm = () => {
         />
          <FormField
           control={form.control}
-          name="name"
+          name="style"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Companion name</FormLabel>
+              <FormLabel>Speaking Style</FormLabel>
               <FormControl>
-                <Input placeholder="enter the compnion name" {...field} />
+              <Select onValueChange={field.onChange} value={field.value}
+              defaultValue={field.value}>
+                <SelectTrigger className="input">
+                    <SelectValue placeholder="Select the style" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="casual">Casual</SelectItem>
+                    <SelectItem value="formal">Formal</SelectItem>
+                </SelectContent>
+              </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -119,19 +157,45 @@ const CompanionForm = () => {
         />
          <FormField
           control={form.control}
-          name="name"
+          name="duration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Companion name</FormLabel>
+              <FormLabel>Estimated session duration</FormLabel>
               <FormControl>
-                <Input placeholder="enter the compnion name" {...field} />
+               <Input type="number" placeholder="15" {...field} className="input"/>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+         <FormField
+          control={form.control}
+          name="languages"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Language</FormLabel>
+              <FormControl>
+              <Select onValueChange={field.onChange} value={field.value}
+              defaultValue={field.value}>
+                <SelectTrigger className="input">
+                    <SelectValue placeholder="Select the language" />
+                </SelectTrigger>
+                <SelectContent>
+                    {Object.keys(languages).map((language: string) => (
+                        <SelectItem value={language} key={language} 
+                        className="capitalize">
+                            {language}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />        
         
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="w-full cursor-pointer">Build your companion</Button>
       </form>
       
     </Form>
