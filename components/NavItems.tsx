@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils'
 
 const navItems = [
     {label:"home", href:"/"},
+    {label:"companions", href:"/companions"},
     {label:"my Journey", href:"/my-journey"},
-    {label:"new", href:"/new"},
     {label:"profile", href:"/profile"},
     {label:"subscription", href:"/subscription"},
 ]

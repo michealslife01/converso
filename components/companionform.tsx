@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { subjects, voices, languages } from "@/constants"
 import { Textarea } from "@/components/ui/textarea"
+import { createCompanion } from "@/lib/actions/companion.action"
+import { redirect } from "next/navigation"
  
 const formSchema = z.object({
   name: z.string().min(1, {message:'companion is requred.'}),
@@ -47,8 +49,14 @@ const CompanionForm = () => {
   })
  
   // 2. Define a submit handler.
-  const onSubmit: SubmitHandler<z.output<typeof formSchema>> = (values) => {
-    console.log(values)
+  const onSubmit: SubmitHandler<z.output<typeof formSchema>> = async (values) => {
+    const companions = await createCompanion(values);
+
+    if (!companions) {
+        console.log("failed to create companion");
+    }else {
+        redirect(`/companions/${companions.id}`);
+    }
   }
 
   return (
