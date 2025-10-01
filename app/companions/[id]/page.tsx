@@ -1,18 +1,36 @@
-import CompanionForm from "@/components/companionform";
-import { auth } from "@clerk/nextjs/server";
+
+
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { getCompanion } from "@/lib/actions/companion.action";
+import { getSubjectColor } from "@/lib/utils";
 
-const companionSession = async () => {
-  const {userId} = await auth();
+interface companionSessionPageProps {
+  params: Promise<{id:string}>
+}
 
-  if (!userId) {
+const companionSession = async ({params}: companionSessionPageProps) => {
+  const {id} = await params;
+  const companion = await getCompanion(id);
+  const user = await currentUser();
+
+
+  if (!user) {
     redirect("/sign-in");
   }
+
+  if (!companion) {
+    redirect("/companions");
+  }
     return (
-      <main className="companion-form-container min-lg:w-1/3 min-md:w-2/4\3 items-center justify-center">
-      <article className="w-full gap-4 flex flex-col">
-          <h1>Companion Builder</h1>
-          <CompanionForm />
+      <main className="">
+      <article className="flex rounded rounded-border justify-between p-6 max-md:flex-col">
+          <div className="flex items-center gap-4 ">
+            <div className="size-[72] rounded-lg flex items-center justify-center max-md:hidden" style={{backgroundColor: getSubjectColor(companion.subject)
+            }}>
+
+            </div>
+          </div>
       </article>
       </main>
     )
